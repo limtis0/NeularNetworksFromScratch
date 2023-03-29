@@ -1,7 +1,7 @@
 from p1 import calc_neuron_output
 
-""" Layer of 3 neurons """
-if __name__ == '__main__':
+
+def ex_1():
     inputs = [1, 2, 3, 2.5]
 
     weights1 = [0.2, 0.8, -0.5, 1.0]
@@ -19,3 +19,8 @@ if __name__ == '__main__':
     ]
 
     print(output)
+
+
+""" Layer of 3 neurons """
+if __name__ == '__main__':
+    ex_1()
