@@ -1,6 +1,6 @@
 import numpy as np
 from typing import List
-from p1 import calc_neuron_output
+from l1 import calc_neuron_output
 
 
 # Lab2 in a function

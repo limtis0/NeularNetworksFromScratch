@@ -1,4 +1,4 @@
-from p1 import calc_neuron_output
+from l1 import calc_neuron_output
 
 
 def ex_1():
