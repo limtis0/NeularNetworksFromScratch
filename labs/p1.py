@@ -5,6 +5,7 @@ def calc_neuron_output(input_values: List[float], weight_values: List[float], bi
     return sum(input_values[i] * weight_values[i] for i in range(len(input_values))) + bias_value
 
 
+""" Basic neuron """
 if __name__ == '__main__':
     # Randomly chosen data
     inputs = [1.2, 5.1, 2.1]
