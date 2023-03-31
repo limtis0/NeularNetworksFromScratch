@@ -21,6 +21,6 @@ def ex_1():
     print(output)
 
 
-""" Layer of 3 neurons """
+""" Layer of 3 layer """
 if __name__ == '__main__':
     ex_1()
