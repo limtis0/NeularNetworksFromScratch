@@ -176,6 +176,14 @@ def ex_4():
     print(biases)
 
 
+def ex_5():
+    softmax_output = [0.7, 0.1, 0.2]
+    softmax_output = np.array(softmax_output).reshape(-1, 1)
+
+    jacobian_matrix = np.diagflat(softmax_output) - np.dot(softmax_output, softmax_output.T)
+    print(jacobian_matrix)
+
+
 if __name__ == '__main__':
     nnfs.init()
-    ex_4()
+    ex_5()
