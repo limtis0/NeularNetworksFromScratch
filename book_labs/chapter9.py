@@ -1,5 +1,11 @@
 import nnfs
+from nnfs.datasets import spiral_data
 import numpy as np
+from src.activation.softmax import Softmax
+from src.activation.relu import ReLU
+from src.loss.categorical_crossentropy import CategoricalCrossentropy
+from src.layer.softmax_classifier import SoftmaxClassifier
+from src.layer.dense import Dense
 
 
 def ex_1():
@@ -184,6 +190,71 @@ def ex_5():
     print(jacobian_matrix)
 
 
+def ex_6():
+    softmax_outputs = np.array([
+        [0.7, 0.1, 0.2],
+        [0.1, 0.5, 0.4],
+        [0.02, 0.9, 0.08]
+    ])
+
+    y = np.array([0, 1, 1])
+
+    softmax_classifier = SoftmaxClassifier()
+    softmax_classifier.backward(softmax_outputs, y)
+    d_values = softmax_classifier.d_inputs
+
+    activation = Softmax()
+    activation.output = softmax_outputs
+
+    loss = CategoricalCrossentropy()
+    loss.backward(softmax_outputs, y)
+    activation.backward(loss.d_inputs)
+    d_values_2 = activation.d_inputs
+
+    print(f'Gradients of combined loss and activation:\n{d_values}\n')
+    print('Gradients of separated loss and activation:\n', d_values_2)
+
+
+def ex_7():
+    X, y = spiral_data(100, 3)
+
+    # Model
+    dense_1 = Dense(2, 3)
+    activation_1 = ReLU()
+    dense_2 = Dense(3, 3)
+    softmax_classifier = SoftmaxClassifier()
+
+    # Forward pass
+    dense_1.forward(X)
+    activation_1.forward(dense_1.output)
+    dense_2.forward(activation_1.output)
+    loss = softmax_classifier.forward(dense_2.output, y)
+
+    # stdout - model
+    print(softmax_classifier.output[:5])
+    print(f'loss: {loss}')
+
+    # Accuracy
+    predictions = np.argmax(softmax_classifier.output, axis=1)
+    if len(y.shape) == 2:
+        y = np.argmax(y, axis=1)
+    accuracy = np.mean(predictions == y)
+
+    print(f'acc: {accuracy}\n')
+
+    # Backward pass
+    softmax_classifier.backward(softmax_classifier.output, y)
+    dense_2.backward(softmax_classifier.d_inputs)
+    activation_1.backward(dense_2.d_inputs)
+    dense_1.backward(activation_1.d_inputs)
+
+    # stdout - gradients
+    print(dense_1.d_weights)
+    print(dense_1.d_biases)
+    print(dense_2.d_weights)
+    print(dense_2.d_biases)
+
+
 if __name__ == '__main__':
     nnfs.init()
-    ex_5()
+    ex_7()
