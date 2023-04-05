@@ -219,9 +219,9 @@ def ex_7():
     X, y = spiral_data(100, 3)
 
     # Model
-    dense_1 = Dense(2, 3)
+    dense_1 = Dense(2, 64)
     activation_1 = ReLU()
-    dense_2 = Dense(3, 3)
+    dense_2 = Dense(64, 3)
     softmax_classifier = SoftmaxClassifier()
 
     # Forward pass
