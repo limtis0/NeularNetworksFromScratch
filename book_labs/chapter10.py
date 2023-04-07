@@ -6,6 +6,7 @@ from src.optimizers.optimizer import Optimizer
 from src.optimizers.sgd import SGD
 from src.optimizers.adagrad import AdaGrad
 from src.optimizers.rmsprop import RMSProp
+from src.optimizers.adam import Adam
 
 from src.activation.relu import ReLU
 from src.layer.softmax_classifier import SoftmaxClassifier
@@ -42,6 +43,12 @@ def ex_5():
 # Root Mean Square Propagation
 def ex_6():
     train_model(RMSProp(learning_rate=0.005, decay=1e-5, rho=0.999))
+
+
+# Adam optimizer
+# Able to get to 0.983 accuracy and 0.054 loss
+def ex_7():
+    train_model(Adam(learning_rate=0.06, decay=8e-6))
 
 
 def train_model(optimizer: Optimizer):
@@ -84,4 +91,4 @@ def train_model(optimizer: Optimizer):
 
 if __name__ == '__main__':
     nnfs.init()
-    ex_6()
+    ex_7()
