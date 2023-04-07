@@ -1,9 +1,12 @@
+import numpy as np
 import nnfs
 from nnfs.datasets import spiral_data
-import numpy as np
+
 from src.optimizers.optimizer import Optimizer
 from src.optimizers.sgd import SGD
 from src.optimizers.adagrad import AdaGrad
+from src.optimizers.rmsprop import RMSProp
+
 from src.activation.relu import ReLU
 from src.layer.softmax_classifier import SoftmaxClassifier
 from src.layer.dense import Dense
@@ -34,6 +37,11 @@ def ex_4():
 # For this dataset, it shows a bit worse than SGD
 def ex_5():
     train_model(AdaGrad(learning_rate=1.02, decay=1e-5))
+
+
+# Root Mean Square Propagation
+def ex_6():
+    train_model(RMSProp(learning_rate=0.005, decay=1e-5, rho=0.999))
 
 
 def train_model(optimizer: Optimizer):
@@ -76,4 +84,4 @@ def train_model(optimizer: Optimizer):
 
 if __name__ == '__main__':
     nnfs.init()
-    ex_5()
+    ex_6()
