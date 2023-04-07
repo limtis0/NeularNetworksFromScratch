@@ -13,8 +13,6 @@ class Dense:
         self.d_inputs = None
         self.d_weights = None
         self.d_biases = None
-        self.weight_momentums = np.zeros_like(self.weights)
-        self.bias_momentums = np.zeros_like(self.biases)
 
     def forward(self, inputs):
         self.inputs = inputs

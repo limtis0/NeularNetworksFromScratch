@@ -1,34 +1,32 @@
+import numpy as np
 from src.layer.dense import Dense
+from src.optimizers.optimizer import Optimizer
 
 
-class SGD:
+class SGD(Optimizer):
     def __init__(self, learning_rate=1.0, decay=0, momentum=0):
-        self.learning_rate = learning_rate
-        self.current_learing_rate = learning_rate
-        self.decay = decay
-        self.iterations = 0
+        super().__init__(learning_rate, decay)
         self.momentum = momentum
 
-    def pre_update_params(self):
-        # LR decay
-        if self.decay:
-            self.current_learing_rate = self.learning_rate * (1 / (1 + self.decay * self.iterations))
+        self.weight_momentums = {}
+        self.bias_momentums = {}
 
     def update_params(self, layer: Dense):
         if self.momentum:
+            if layer not in self.weight_momentums:
+                self.weight_momentums[layer] = np.zeros_like(layer.weights)
+                self.bias_momentums[layer] = np.zeros_like(layer.biases)
+
             # Build weight updates with momentum
-            weight_updates = self.momentum * layer.weight_momentums - self.current_learing_rate * layer.d_weights
-            layer.weight_momentums = weight_updates
+            weight_updates = self.momentum * self.weight_momentums[layer] - self.current_learning_rate * layer.d_weights
+            self.weight_momentums[layer] = weight_updates
 
             # Build bias updates with momentum
-            bias_updates = self.momentum * layer.bias_momentums - self.current_learing_rate * layer.d_biases
-            layer.bias_momentums = bias_updates
+            bias_updates = self.momentum * self.bias_momentums[layer] - self.current_learning_rate * layer.d_biases
+            self.bias_momentums[layer] = bias_updates
         else:
-            weight_updates = -self.current_learing_rate * layer.d_weights
-            bias_updates = -self.current_learing_rate * layer.d_biases
+            weight_updates = -self.current_learning_rate * layer.d_weights
+            bias_updates = -self.current_learning_rate * layer.d_biases
 
         layer.weights += weight_updates
         layer.biases += bias_updates
-
-    def post_update_params(self):
-        self.iterations += 1
