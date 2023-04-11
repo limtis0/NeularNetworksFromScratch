@@ -5,3 +5,13 @@ on Neural Networks from Scratch by [Sentdex's](https://www.youtube.com/@sentdex)
 
 I am taking this course to fill the blank spaces in my knowledge of Machine Learning 
 and to get a better in-depth understanding of it as well.
+
+### Taken topics:
+- Neurons & Dense Layers
+- Activation Functions
+- Loss Functions
+- (Partial) Derivatives & Gradients
+- Backpropagation
+- Optimizers
+- Validation
+- L1 & L2 Regularization
