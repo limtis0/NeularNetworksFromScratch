@@ -1,11 +1,8 @@
 import numpy as np
+from src.abstract.layer import Layer
 
 
-class Softmax:
-    def __init__(self):
-        self.output = None
-        self.d_inputs = None
-
+class Softmax(Layer):
     def forward(self, inputs):
         exp = np.exp(inputs - np.max(inputs, axis=1, keepdims=True))
         self.output = exp / np.sum(exp, axis=1, keepdims=True)

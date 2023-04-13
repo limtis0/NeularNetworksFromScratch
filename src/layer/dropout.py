@@ -1,14 +1,13 @@
 import numpy as np
+from src.abstract.layer import Layer
 
 
-class Dropout:
+class Dropout(Layer):
     def __init__(self, rate):
-        self.rate = 1 - rate
+        super().__init__()
 
-        self.inputs = None
+        self.rate = 1 - rate
         self.binary_mask = None
-        self.output = None
-        self.d_inputs = None
 
     def forward(self, inputs):
         self.inputs = inputs

@@ -1,5 +1,4 @@
 import numpy as np
-
 from src.activation.softmax import Softmax
 from src.loss.categorical_crossentropy import CategoricalCrossentropy
 

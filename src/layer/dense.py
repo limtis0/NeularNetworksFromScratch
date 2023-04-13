@@ -1,22 +1,16 @@
 import numpy as np
+from src.abstract.layer import Layer
 
 
-class Dense:
-    def __init__(self, n_inputs: int,
-                 n_neurons: int,
-                 l1_regularizer_w: float = 0,
-                 l2_regularizer_w: float = 0,
-                 l1_regularizer_b: float = 0,
-                 l2_regularizer_b: float = 0
-                 ):
+class Dense(Layer):
+    def __init__(self, n_inputs: int, n_neurons: int, l1_regularizer_w: float = 0, l2_regularizer_w: float = 0,
+                 l1_regularizer_b: float = 0, l2_regularizer_b: float = 0):
+        super().__init__()
+
         self.weights = np.random.randn(n_inputs, n_neurons) * 0.01
         self.biases = np.zeros((1, n_neurons))
 
-        self.inputs = None
-        self.output = None
-
         # Back-propagation
-        self.d_inputs = None
         self.d_weights = None
         self.d_biases = None
 

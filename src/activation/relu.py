@@ -1,13 +1,8 @@
 import numpy as np
+from src.abstract.layer import Layer
 
 
-class ReLU:
-    def __init__(self):
-        self.output = None
-        self.inputs = None
-
-        self.d_inputs = None
-
+class ReLU(Layer):
     def forward(self, inputs):
         self.inputs = inputs
         self.output = np.maximum(0, inputs)
