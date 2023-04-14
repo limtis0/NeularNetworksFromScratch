@@ -9,6 +9,7 @@ class Loss(ABC):
 
     def calculate(self, output: np.ndarray, y_actual: np.ndarray):
         sample_losses = self._forward(output, y_actual)
+
         return np.mean(sample_losses)
 
     @staticmethod
