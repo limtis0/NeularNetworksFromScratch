@@ -8,10 +8,11 @@ and to get a better in-depth understanding of it as well.
 
 ### Taken topics:
 - Neurons & Dense Layers
-- Activation Functions
-- Loss Functions
+- Activation Functions (Implemented: ReLU, Softmax, Sigmoid)
+- Loss Functions (Implemented: Categorical & Binary Cross-Entropies)
 - (Partial) Derivatives & Gradients
 - Backpropagation
 - Optimizers
 - Validation
 - L1 & L2 Regularization
+- Dropout layers
