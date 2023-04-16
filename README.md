@@ -16,3 +16,4 @@ and to get a better in-depth understanding of it as well.
 - Validation
 - L1 & L2 Regularization
 - Dropout layers
+- Regression
