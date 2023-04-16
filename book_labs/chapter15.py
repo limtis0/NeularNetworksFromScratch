@@ -40,7 +40,7 @@ def train_model(n_neurons):
         # Forward pass
         dense_1.forward(X)
         activation_1.forward(dense_1.output)
-        dropout_1.forward(activation_1.output)
+        dropout_1.forward(activation_1.output, training=True)
         dense_2.forward(dropout_1.output)
 
         # Loss calculation

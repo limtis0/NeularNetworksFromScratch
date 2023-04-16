@@ -9,7 +9,6 @@ from src.loss.mean_squared_error import MeanSquaredError
 from src.optimizers.adam import Adam
 
 
-# Model trained with the Dropout layer
 def train_model():
     X, y = sine_data()
 
@@ -21,7 +20,7 @@ def train_model():
     dense_3 = Dense(64, 1)
     activation_3 = Linear()
     loss_function = MeanSquaredError()
-    optimizer = Adam(learning_rate=0.005, decay=1e-3)
+    optimizer = Adam(learning_rate=0.01, decay=1e-3)
 
     accuracy_precision = np.std(y) / 250
 

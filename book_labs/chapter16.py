@@ -8,7 +8,6 @@ from src.loss.binary_crossentropy import BinaryCrossentropy
 from src.optimizers.adam import Adam
 
 
-# Model trained with the Dropout layer
 def train_model():
     X, y = spiral_data(samples=100, classes=2)
     y = y.reshape(-1, 1)
