@@ -13,6 +13,8 @@ class SoftmaxClassifier:
         self.output = None
         self.d_inputs = None
 
+    # Deprecated since the introduction of Model class,
+    # Left there for labs
     def forward(self, inputs, y_actual):
         self.activation.forward(inputs)
         self.output = self.activation.output

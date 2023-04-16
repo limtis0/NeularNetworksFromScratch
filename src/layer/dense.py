@@ -1,5 +1,5 @@
 import numpy as np
-from src.abstract.layer import Layer
+from src.model.layer import Layer
 
 
 class Dense(Layer):
@@ -7,7 +7,7 @@ class Dense(Layer):
                  l1_regularizer_b: float = 0, l2_regularizer_b: float = 0):
         super().__init__()
 
-        self.weights = np.random.randn(n_inputs, n_neurons) * 0.01
+        self.weights = np.random.randn(n_inputs, n_neurons) * 0.1
         self.biases = np.zeros((1, n_neurons))
 
         # Back-propagation
@@ -20,7 +20,7 @@ class Dense(Layer):
         self.l1_regularizer_b = l1_regularizer_b
         self.l2_regularizer_b = l2_regularizer_b
 
-    def forward(self, inputs):
+    def forward(self, inputs, training=False):
         self.inputs = inputs
         self.output = np.dot(inputs, self.weights) + self.biases
 
