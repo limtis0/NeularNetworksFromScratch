@@ -1,9 +1,10 @@
 import numpy as np
-from src.abstract.layer import Layer
+from src.model.layer import Layer
+from src.activation.activation import Activation
 
 
-class Softmax(Layer):
-    def forward(self, inputs):
+class Softmax(Layer, Activation):
+    def forward(self, inputs, training=False):
         exp = np.exp(inputs - np.max(inputs, axis=1, keepdims=True))
         self.output = exp / np.sum(exp, axis=1, keepdims=True)
 
@@ -15,3 +16,6 @@ class Softmax(Layer):
             single_output = single_output.reshape(-1, 1)  # Flatten
             jacobian_matrix = np.diagflat(single_output) - np.dot(single_output, single_output.T)
             self.d_inputs[i] = np.dot(jacobian_matrix, single_d_values)
+
+    def get_predictions(self, output):
+        return np.argmax(output, axis=1)
