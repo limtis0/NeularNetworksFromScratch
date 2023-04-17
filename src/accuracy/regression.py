@@ -4,6 +4,7 @@ from src.accuracy.accuracy import Accuracy
 
 class Regression(Accuracy):
     def __init__(self):
+        super().__init__()
         self.precision = None
 
     def initialize(self, y, reinit=False):

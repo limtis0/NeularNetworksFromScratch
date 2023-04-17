@@ -61,8 +61,7 @@ class Model:
 
             # stdout
             if epoch % print_every == 0:
-                regularization_loss = np.sum(
-                    self.loss.get_regularization_loss(layer) for layer in self.trainable_layers)
+                regularization_loss = self.loss.get_regularization_loss(*self.trainable_layers)
                 loss = data_loss + regularization_loss
 
                 predictions = self.output_layer.get_predictions(output)
