@@ -1,3 +1,6 @@
+import copy
+import pickle
+
 from src.model.input import Input
 from src.layer.dense import Dense
 
@@ -14,10 +17,10 @@ from typing import Optional
 
 
 class Model:
-    def __init__(self, *args, loss: Loss, optimizer: Optimizer, accuracy: Accuracy):
+    def __init__(self, *layers, loss: Loss, optimizer: Optimizer, accuracy: Accuracy):
         self.input_layer = Input()
-        self.layers = [layer for layer in args]
-        self.trainable_layers = [layer for layer in args if isinstance(layer, Dense)]
+        self.layers = [layer for layer in layers]
+        self.trainable_layers = [layer for layer in layers if isinstance(layer, Dense)]
         self.output_layer: Activation = self.layers[-1]
 
         self.loss = loss
@@ -166,3 +169,34 @@ class Model:
 
         for layer in reversed(self.layers[:-1]):
             layer.backward(layer.next.d_inputs)
+
+    def save(self, path):
+        model = copy.deepcopy(self)
+
+        # Cleanup
+        model.loss.reset_accumulated()
+        model.accuracy.reset_accumulated()
+
+        del model.input_layer.output
+        del model.loss.d_inputs
+
+        for layer in model.layers:
+            try:
+                del layer.inputs
+                del layer.output
+                del layer.d_inputs
+                del layer.d_weights
+                del layer.d_biases
+
+            except AttributeError:  # Not all of the layers have d_weights/d_biases values
+                pass
+
+        with open(path, 'wb') as f:
+            pickle.dump(model, f)
+
+    @staticmethod
+    def load(path):
+        with open(path, 'rb') as f:
+            model = pickle.load(f)
+
+        return model
