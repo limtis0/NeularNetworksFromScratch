@@ -128,7 +128,7 @@ class Model:
         validation_loss = self.loss.calculate_accumulated()
         validation_accuracy = self.accuracy.calculate_accumulated()
 
-        print(f'Validation - acc: {validation_accuracy:.3f}, loss: {validation_loss:.3f}')
+        print(f'Evaluation - acc: {validation_accuracy:.3f}, loss: {validation_loss:.3f}')
 
     @staticmethod
     def _calculate_steps(X, batch_size: int):
