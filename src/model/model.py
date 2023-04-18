@@ -53,7 +53,7 @@ class Model:
         self.accuracy.initialize(y)
 
         # Calculate amount of steps
-        steps_train, steps_val = self._calculate_steps(batch_size, X, validation_data)
+        training_steps = self._calculate_steps(X, batch_size)
 
         # Training
         for epoch in range(1, epochs + 1):
@@ -62,7 +62,7 @@ class Model:
             self.loss.reset_accumulated()
             self.accuracy.reset_accumulated()
 
-            for step in range(steps_train):
+            for step in range(training_steps):
                 if batch_size is None:
                     batch_X = X
                     batch_y = y
@@ -74,7 +74,7 @@ class Model:
                 data_loss = self.loss.calculate(output, batch_y)
 
                 # Step stdout
-                if step % print_every == 0 or step == steps_train - 1:
+                if step % print_every == 0 or step == training_steps - 1:
                     regularization_loss = self.loss.get_regularization_loss(*self.trainable_layers)
                     loss = data_loss + regularization_loss
 
@@ -103,33 +103,13 @@ class Model:
 
         # Validation
         if validation_data is not None:
-            self._validate(batch_size, steps_val, validation_data)
+            self.evaluate(*validation_data, batch_size)
 
-    @staticmethod
-    def _calculate_steps(batch_size: int, X, validation_data):
-        # Calculate the amount of steps_train per epoch using batch_size
-        if batch_size is not None:
-            steps_train = len(X) // batch_size
-            if steps_train * batch_size < len(X):
-                steps_train += 1
-
-            # Same for validation
-            steps_val = 1
-            if validation_data is not None:
-                X_val, y_val = validation_data
-
-                steps_val = len(X_val) // batch_size
-                if steps_val * batch_size < len(X_val):
-                    steps_val += 1
-
-            return steps_train, steps_val
-        return 1, 1
-
-    def _validate(self, batch_size, steps_val, validation_data):
+    def evaluate(self, X_val, y_val, batch_size=None):
         self.loss.reset_accumulated()
         self.accuracy.reset_accumulated()
 
-        X_val, y_val = validation_data
+        steps_val = self._calculate_steps(X_val, batch_size)
 
         for step in range(steps_val):
             if batch_size is None:
@@ -149,6 +129,18 @@ class Model:
         validation_accuracy = self.accuracy.calculate_accumulated()
 
         print(f'Validation - acc: {validation_accuracy:.3f}, loss: {validation_loss:.3f}')
+
+    @staticmethod
+    def _calculate_steps(X, batch_size: int):
+        # Calculate the amount of steps_train per epoch using batch_size
+        if batch_size is None:
+            return 1
+
+        steps_train = len(X) // batch_size
+        if steps_train * batch_size < len(X):
+            steps_train += 1
+
+        return steps_train
 
     def forward(self, X, training: bool):
         self.input_layer.forward(X)
