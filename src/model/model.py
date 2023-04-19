@@ -1,6 +1,8 @@
 import copy
 import pickle
 
+import numpy as np
+
 from src.model.input import Input
 from src.layer.dense import Dense
 
@@ -56,7 +58,7 @@ class Model:
         self.accuracy.initialize(y)
 
         # Calculate amount of steps
-        training_steps = self._calculate_steps(X, batch_size)
+        steps = self._calculate_steps(X, batch_size)
 
         # Training
         for epoch in range(1, epochs + 1):
@@ -65,7 +67,7 @@ class Model:
             self.loss.reset_accumulated()
             self.accuracy.reset_accumulated()
 
-            for step in range(training_steps):
+            for step in range(steps):
                 if batch_size is None:
                     batch_X = X
                     batch_y = y
@@ -77,7 +79,7 @@ class Model:
                 data_loss = self.loss.calculate(output, batch_y)
 
                 # Step stdout
-                if step % print_every == 0 or step == training_steps - 1:
+                if step % print_every == 0 or step == steps - 1:
                     regularization_loss = self.loss.get_regularization_loss(*self.trainable_layers)
                     loss = data_loss + regularization_loss
 
@@ -112,9 +114,9 @@ class Model:
         self.loss.reset_accumulated()
         self.accuracy.reset_accumulated()
 
-        steps_val = self._calculate_steps(X_val, batch_size)
+        steps = self._calculate_steps(X_val, batch_size)
 
-        for step in range(steps_val):
+        for step in range(steps):
             if batch_size is None:
                 batch_X = X_val
                 batch_y = y_val
@@ -132,6 +134,21 @@ class Model:
         validation_accuracy = self.accuracy.calculate_accumulated()
 
         print(f'Evaluation - acc: {validation_accuracy:.3f}, loss: {validation_loss:.3f}')
+
+    def predict(self, X, batch_size=None):
+        steps = self._calculate_steps(X, batch_size)
+
+        output = []
+        for step in range(steps):
+            if batch_size is None:
+                batch_X = X
+            else:
+                batch_X = X[step * batch_size:(step + 1) * batch_size]
+
+            batch_output = self.forward(batch_X, training=False)
+            output.append(batch_output)
+
+        return np.vstack(output)
 
     @staticmethod
     def _calculate_steps(X, batch_size: int):
